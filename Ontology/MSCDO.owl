@@ -1,0 +1,2278 @@
+
+
+
+
+@prefix :
+<http://example.org/msdo#MSCDO> .
+
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+
+@prefix atc: <http://www.whocc.no/atc_ddd_index/> .
+
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+@prefix icps: <http://www.who.int/patientsafety/taxonomy/> .
+
+@prefix msdo: <http://example.org/msdo#> .
+
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+
+@prefix umls: <https://uts.nlm.nih.gov/uts/umls/> .
+
+@prefix loinc: <http://loinc.org/rdf/> .
+
+@prefix meddra: <http://purl.bioontology.org/ontology/MEDDRA/> .
+
+@prefix rxnorm: <http://rxnav.nlm.nih.gov/REST/rxcui/> .
+
+@prefix snomed: <http://snomed.info/id/> .
+
+@base <http://example.org/msdo#MSCDO> .
+
+
+
+<http://example.org/msdo#MSCDO> rdf:type owl:Ontology ;
+
+                                
+dc:creator "Anonymous (for peer review)" ;
+
+                                 dc:date "2026" ;
+
+                                
+dc:description "A comprehensive ontology enabling ontology-driven
+human–AI co-decision-making for preventing medication-related harm, integrating
+medication knowledge, patient context, risk and safety, explainability, and
+ICPS-based prevention strategies." ;
+
+                                 dc:title
+"Medication Safety Co-Decision Ontology (MSCDO)" .
+
+
+
+#################################################################
+
+#    Annotation properties
+
+
+
+#################################################################
+
+ 
+
+
+
+###  http://example.org/msdo#SPARQL_HighRisk
+
+msdo:SPARQL_HighRisk rdf:type owl:AnnotationProperty ;
+
+                     rdfs:comment
+"""
+
+
+
+SELECT
+?medication ?event
+
+
+
+WHERE {
+
+
+
+  ?medication msdo:causesAdverseEvent ?event .
+
+
+
+  ?event a msdo:AdverseDrugEvent .
+
+
+
+}
+
+
+
+"""
+.
+
+
+
+
+
+### 
+http://example.org/msdo#SPARQL_PreventableErrors
+
+msdo:SPARQL_PreventableErrors rdf:type owl:AnnotationProperty ;
+
+                             
+rdfs:comment """
+
+
+
+SELECT ?error
+?factor ?strategy
+
+
+
+WHERE {
+
+
+
+  ?error a msdo:MedicationError .
+
+
+
+  ?error msdo:hasContributingFactor ?factor .
+
+
+
+  ?error msdo:mitigatedBy ?strategy .
+
+
+
+}
+
+
+
+"""
+.
+
+
+
+
+
+### 
+http://purl.org/dc/elements/1.1/creator
+
+dc:creator rdf:type owl:AnnotationProperty .
+
+
+
+
+
+### 
+http://purl.org/dc/elements/1.1/date
+
+dc:date rdf:type owl:AnnotationProperty .
+
+
+
+
+
+### 
+http://purl.org/dc/elements/1.1/description
+
+dc:description rdf:type owl:AnnotationProperty .
+
+
+
+
+
+### 
+http://purl.org/dc/elements/1.1/title
+
+dc:title rdf:type owl:AnnotationProperty .
+
+
+
+
+
+### 
+http://swrl.stanford.edu/ontologies/3.3/swrla.owl#isRuleEnabled
+
+<http://swrl.stanford.edu/ontologies/3.3/swrla.owl#isRuleEnabled>
+rdf:type owl:AnnotationProperty .
+
+
+
+
+
+### 
+http://www.w3.org/2004/02/skos/core#closeMatch
+
+skos:closeMatch rdf:type owl:AnnotationProperty .
+
+
+
+
+
+### 
+http://www.w3.org/2004/02/skos/core#exactMatch
+
+skos:exactMatch rdf:type owl:AnnotationProperty .
+
+
+
+
+
+#################################################################
+
+#    Object Properties
+
+
+
+#################################################################
+
+ 
+
+
+
+###  http://example.org/msdo#associatedWith
+
+msdo:associatedWith rdf:type owl:ObjectProperty ;
+
+                    rdfs:domain
+msdo:Medication ,
+
+                               
+msdo:MedicationEntity ,
+
+                               
+rxnorm:ClinicalDrug ;
+
+                    rdfs:range
+msdo:AdverseDrugEvent ,
+
+                              
+msdo:AdverseDrugReaction ,
+
+                              
+msdo:MedicationRelatedRisk ,
+
+                              
+<http://purl.bioontology.org/ontology/MEDDRA/10002034> .
+
+
+
+
+
+### 
+http://example.org/msdo#causesAdverseEvent
+
+msdo:causesAdverseEvent rdf:type owl:ObjectProperty ;
+
+                        rdfs:domain
+msdo:Medication ,
+
+                                   
+msdo:MedicationEntity ,
+
+                                   
+rxnorm:ClinicalDrug ;
+
+                        rdfs:range
+msdo:AdverseDrugEvent ,
+
+                                  
+msdo:MedicationRelatedRisk ,
+
+                                  
+<http://purl.bioontology.org/ontology/MEDDRA/10002034> .
+
+
+
+
+
+### 
+http://example.org/msdo#hasActiveIngredient
+
+msdo:hasActiveIngredient rdf:type owl:ObjectProperty ;
+
+                         rdfs:domain
+msdo:Medication ,
+
+                                    
+msdo:MedicationEntity ,
+
+                                    
+rxnorm:ClinicalDrug ;
+
+                         rdfs:range
+msdo:ActiveIngredient .
+
+
+
+
+
+### 
+http://example.org/msdo#hasClinicalCondition
+
+msdo:hasClinicalCondition rdf:type owl:ObjectProperty ;
+
+                          rdfs:domain
+msdo:Patient ,
+
+                                     
+msdo:PatientContext ;
+
+                          rdfs:range
+msdo:ClinicalCondition ,
+
+                                    
+<http://snomed.info/id/404684003> .
+
+
+
+
+
+### 
+http://example.org/msdo#hasContributingFactor
+
+msdo:hasContributingFactor rdf:type owl:ObjectProperty ;
+
+                           rdfs:domain
+msdo:MedicationError ,
+
+                                      
+msdo:MedicationRelatedRisk ,
+
+                                      
+icps:MedicationError ;
+
+                           rdfs:range
+msdo:ContributingFactor ,
+
+                                     
+icps:ContributingFactor .
+
+
+
+
+
+### 
+http://example.org/msdo#hasGeneticRisk
+
+msdo:hasGeneticRisk rdf:type owl:ObjectProperty ;
+
+                    rdfs:domain
+msdo:Patient ,
+
+                               
+msdo:PatientContext ;
+
+                    rdfs:range
+msdo:PharmacogenomicProfile .
+
+
+
+
+
+### 
+http://example.org/msdo#hasInteractionMechanism
+
+msdo:hasInteractionMechanism rdf:type owl:ObjectProperty ;
+
+                             rdfs:domain msdo:Medication
+,
+
+                                        
+msdo:MedicationEntity ,
+
+                                        
+rxnorm:ClinicalDrug ;
+
+                             rdfs:range
+msdo:DrugDrugInteraction .
+
+
+
+
+
+### 
+http://example.org/msdo#hasOrganFunction
+
+msdo:hasOrganFunction rdf:type owl:ObjectProperty ;
+
+                      rdfs:domain
+msdo:Patient ,
+
+                                 
+msdo:PatientContext ;
+
+                      rdfs:range
+msdo:OrganFunction .
+
+
+
+
+
+###  http://example.org/msdo#hasRiskProfile
+
+msdo:hasRiskProfile rdf:type owl:ObjectProperty ;
+
+                    rdfs:domain
+msdo:Medication ,
+
+                               
+msdo:MedicationEntity ,
+
+                               
+rxnorm:ClinicalDrug ;
+
+                    rdfs:range
+msdo:RiskProfile .
+
+
+
+
+
+### 
+http://example.org/msdo#hasSeverity
+
+msdo:hasSeverity rdf:type owl:ObjectProperty ;
+
+                 rdfs:domain
+msdo:DrugDrugInteraction ,
+
+                            
+msdo:Medication ,
+
+                             msdo:MedicationEntity ,
+
+                            
+rxnorm:ClinicalDrug ;
+
+                 rdfs:range msdo:Severity
+.
+
+
+
+
+
+### 
+http://example.org/msdo#hasTherapeuticClass
+
+msdo:hasTherapeuticClass rdf:type owl:ObjectProperty ;
+
+                         rdfs:domain
+msdo:Medication ,
+
+                                    
+msdo:MedicationEntity ,
+
+                                    
+rxnorm:ClinicalDrug ;
+
+                         rdfs:range
+msdo:TherapeuticClass ,
+
+                                   
+atc:ATCCode .
+
+
+
+
+
+### 
+http://example.org/msdo#interactsWith
+
+msdo:interactsWith rdf:type owl:ObjectProperty ;
+
+                   rdfs:domain
+msdo:Medication ,
+
+                              
+msdo:MedicationEntity ,
+
+                              
+rxnorm:ClinicalDrug ;
+
+                   rdfs:range
+msdo:Medication ,
+
+                             
+msdo:MedicationEntity ,
+
+                             
+rxnorm:ClinicalDrug .
+
+
+
+
+
+### 
+http://example.org/msdo#mitigatedBy
+
+msdo:mitigatedBy rdf:type owl:ObjectProperty ;
+
+                 rdfs:domain msdo:MedicationRelatedRisk ;
+
+                 rdfs:range
+msdo:MitigatingAction .
+
+
+
+
+
+### 
+http://example.org/msdo#overriddenBy
+
+msdo:overriddenBy rdf:type owl:ObjectProperty ;
+
+                  rdfs:domain
+msdo:DecisionArtifact ,
+
+                             
+msdo:Recommendation ;
+
+                  rdfs:range
+msdo:Clinician .
+
+
+
+
+
+### 
+http://example.org/msdo#prescribedDrug
+
+msdo:prescribedDrug rdf:type owl:ObjectProperty ;
+
+                    rdfs:domain
+msdo:Patient ,
+
+                                msdo:PatientContext ;
+
+                    rdfs:range
+msdo:Medication ,
+
+                              
+msdo:MedicationEntity ,
+
+                              
+rxnorm:ClinicalDrug .
+
+
+
+
+
+### 
+http://example.org/msdo#reviewedBy
+
+msdo:reviewedBy rdf:type owl:ObjectProperty ;
+
+                rdfs:domain
+msdo:DecisionArtifact ,
+
+                           
+msdo:Recommendation ;
+
+                rdfs:range msdo:Clinician
+.
+
+
+
+
+
+#################################################################
+
+#    Classes
+
+
+
+#################################################################
+
+ 
+
+
+
+###  http://example.org/msdo#AISystem
+
+msdo:AISystem rdf:type owl:Class .
+
+
+
+
+
+### 
+http://example.org/msdo#ActiveIngredient
+
+msdo:ActiveIngredient rdf:type owl:Class ;
+
+                      rdfs:comment
+"Pharmacologically active substance in a medication." ;
+
+                      skos:exactMatch
+rxnorm:Ingredient .
+
+
+
+
+
+### 
+http://example.org/msdo#AdverseDrugEvent
+
+msdo:AdverseDrugEvent rdf:type owl:Class ;
+
+                      owl:equivalentClass
+<http://purl.bioontology.org/ontology/MEDDRA/10002034> ;
+
+                      rdfs:subClassOf
+msdo:MedicationRelatedRisk ,
+
+                                     
+<http://purl.bioontology.org/ontology/MEDDRA/10002034> .
+
+
+
+
+
+### 
+http://example.org/msdo#AdverseDrugReaction
+
+msdo:AdverseDrugReaction rdf:type owl:Class ;
+
+                         rdfs:subClassOf
+msdo:AdverseDrugEvent ,
+
+                                        
+<http://purl.bioontology.org/ontology/MEDDRA/10002034> ;
+
+                         skos:exactMatch
+<http://purl.bioontology.org/ontology/MEDDRA/10001000> .
+
+
+
+
+
+### 
+http://example.org/msdo#AlternativeOption
+
+msdo:AlternativeOption rdf:type owl:Class .
+
+
+
+
+
+### 
+http://example.org/msdo#ClinicalCondition
+
+msdo:ClinicalCondition rdf:type owl:Class ;
+
+                      
+owl:equivalentClass <http://snomed.info/id/404684003> ;
+
+                       rdfs:subClassOf
+<http://snomed.info/id/404684003> .
+
+
+
+
+
+###  http://example.org/msdo#Clinician
+
+msdo:Clinician rdf:type owl:Class ;
+
+               skos:exactMatch
+<http://snomed.info/id/158965000> .
+
+
+
+
+
+### 
+http://example.org/msdo#CoDecision
+
+msdo:CoDecision rdf:type owl:Class ;
+
+                rdfs:subClassOf
+msdo:HumanAIInteraction ;
+
+                rdfs:comment "A
+shared clinical decision resulting from clinician–AI collaboration." .
+
+
+
+
+
+### 
+http://example.org/msdo#Contraindication
+
+msdo:Contraindication rdf:type owl:Class ;
+
+                      skos:exactMatch
+<http://snomed.info/id/410684002> .
+
+
+
+
+
+### 
+http://example.org/msdo#ContributingFactor
+
+msdo:ContributingFactor rdf:type owl:Class ;
+
+                       
+owl:equivalentClass icps:ContributingFactor ;
+
+                        rdfs:subClassOf
+icps:ContributingFactor .
+
+
+
+
+
+### 
+http://example.org/msdo#DecisionArtifact
+
+msdo:DecisionArtifact rdf:type owl:Class ;
+
+                      rdfs:comment
+"AI- or clinician-generated recommendations, explanations, and
+evidence." ;
+
+                      rdfs:label
+"Decision Artifact" .
+
+
+
+
+
+###  http://example.org/msdo#Detection
+
+msdo:Detection rdf:type owl:Class ;
+
+               skos:closeMatch
+icps:Detection .
+
+
+
+
+
+###  http://example.org/msdo#Dose
+
+msdo:Dose rdf:type owl:Class ;
+
+          skos:closeMatch rxnorm:DoseForm
+.
+
+
+
+
+
+### 
+http://example.org/msdo#DrugDrugInteraction
+
+msdo:DrugDrugInteraction rdf:type owl:Class ;
+
+                         skos:closeMatch
+umls:C0013227 .
+
+
+
+
+
+###  http://example.org/msdo#Duration
+
+msdo:Duration rdf:type owl:Class .
+
+
+
+
+
+### 
+http://example.org/msdo#EmergingSafetySignal
+
+msdo:EmergingSafetySignal rdf:type owl:Class .
+
+
+
+
+
+### 
+http://example.org/msdo#EvidenceStrength
+
+msdo:EvidenceStrength rdf:type owl:Class ;
+
+                      skos:closeMatch
+umls:CUI .
+
+
+
+
+
+### 
+http://example.org/msdo#Explanation
+
+msdo:Explanation rdf:type owl:Class ;
+
+                 rdfs:comment
+"Human-readable justification bridging AI reasoning and clinical
+understanding." .
+
+
+
+
+
+###  http://example.org/msdo#Frequency
+
+msdo:Frequency rdf:type owl:Class .
+
+
+
+
+
+###  http://example.org/msdo#Guideline
+
+msdo:Guideline rdf:type owl:Class ;
+
+               skos:closeMatch umls:CUI
+.
+
+
+
+
+
+###  http://example.org/msdo#HighRiskMedicationCombination
+
+msdo:HighRiskMedicationCombination rdf:type owl:Class .
+
+
+
+
+
+### 
+http://example.org/msdo#HumanAIInteraction
+
+msdo:HumanAIInteraction rdf:type owl:Class ;
+
+                        rdfs:comment
+"Collaborative decision-making processes between clinicians and AI
+systems." ;
+
+                        rdfs:label
+"Human–AI Interaction" .
+
+
+
+
+
+### 
+http://example.org/msdo#LaboratoryParameter
+
+msdo:LaboratoryParameter rdf:type owl:Class ;
+
+                        
+owl:equivalentClass loinc:LP29684-5 ;
+
+                         rdfs:subClassOf
+loinc:LP29684-5 .
+
+
+
+
+
+### 
+http://example.org/msdo#Medication
+
+msdo:Medication rdf:type owl:Class ;
+
+                owl:equivalentClass
+rxnorm:ClinicalDrug ;
+
+                rdfs:subClassOf
+msdo:MedicationEntity ,
+
+                               
+rxnorm:ClinicalDrug ;
+
+                rdfs:comment "A
+clinical drug concept normalized using RxNorm." .
+
+
+
+
+
+### 
+http://example.org/msdo#MedicationDiscrepancy
+
+msdo:MedicationDiscrepancy rdf:type owl:Class .
+
+
+
+
+
+###  http://example.org/msdo#MedicationEntity
+
+msdo:MedicationEntity rdf:type owl:Class ;
+
+                      rdfs:comment
+"Standardized medicinal product representation aligned with RxNorm and
+ATC." ;
+
+                      rdfs:label
+"Medication Entity" ;
+
+                      skos:closeMatch
+atc:ATCCode ;
+
+                      skos:exactMatch
+rxnorm:Concept .
+
+
+
+
+
+### 
+http://example.org/msdo#MedicationError
+
+msdo:MedicationError rdf:type owl:Class ;
+
+                     owl:equivalentClass
+icps:MedicationError ;
+
+                     rdfs:subClassOf
+msdo:MedicationRelatedRisk ,
+
+                                    
+icps:MedicationError .
+
+
+
+
+
+### 
+http://example.org/msdo#MedicationRelatedRisk
+
+msdo:MedicationRelatedRisk rdf:type owl:Class ;
+
+                           rdfs:comment
+"Potential or actual harm associated with medication use, including errors
+and adverse events." ;
+
+                           rdfs:label
+"Medication-Related Risk" ;
+
+                          
+skos:exactMatch <http://purl.bioontology.org/ontology/MEDDRA/10000000>
+.
+
+
+
+
+
+### 
+http://example.org/msdo#MedicationUseContext
+
+msdo:MedicationUseContext rdf:type owl:Class ;
+
+                          rdfs:comment
+"Stage of medication use (prescribing, dispensing, administration,
+monitoring)." ;
+
+                          skos:closeMatch
+icps:Process .
+
+
+
+
+
+### 
+http://example.org/msdo#MitigatingAction
+
+msdo:MitigatingAction rdf:type owl:Class ;
+
+                      skos:exactMatch
+icps:MitigatingFactors .
+
+
+
+
+
+###  http://example.org/msdo#NearMiss
+
+msdo:NearMiss rdf:type owl:Class ;
+
+              owl:equivalentClass
+icps:NearMiss ;
+
+              rdfs:subClassOf
+icps:NearMiss .
+
+
+
+
+
+### 
+http://example.org/msdo#OrganFunction
+
+msdo:OrganFunction rdf:type owl:Class ;
+
+                   skos:closeMatch
+<http://snomed.info/id/363787002> .
+
+
+
+
+
+###  http://example.org/msdo#Patient
+
+msdo:Patient rdf:type owl:Class ;
+
+             rdfs:subClassOf
+msdo:PatientContext ;
+
+             skos:exactMatch
+<http://snomed.info/id/116154003> .
+
+
+
+
+
+### 
+http://example.org/msdo#PatientContext
+
+msdo:PatientContext rdf:type owl:Class ;
+
+                    rdfs:comment
+"Patient-specific clinical, demographic, physiological, and genetic
+factors influencing medication safety." ;
+
+                    rdfs:label
+"Patient Context" ;
+
+                    skos:closeMatch
+umls:CUI .
+
+
+
+
+
+### 
+http://example.org/msdo#PatientSafetyPrevention
+
+msdo:PatientSafetyPrevention rdf:type owl:Class ;
+
+                             rdfs:comment
+"ICPS-aligned prevention, detection, and mitigation mechanisms for
+medication-related harm." ;
+
+                             rdfs:label "Patient Safety
+and Prevention" ;
+
+                            
+skos:exactMatch icps:ConceptualFramework .
+
+
+
+
+
+### 
+http://example.org/msdo#PharmacogenomicProfile
+
+msdo:PharmacogenomicProfile rdf:type owl:Class ;
+
+                           
+skos:closeMatch umls:C1704417 .
+
+
+
+
+
+### 
+http://example.org/msdo#PolypharmacyContext
+
+msdo:PolypharmacyContext rdf:type owl:Class ;
+
+                         rdfs:comment
+"Concurrent use of multiple medications increasing cumulative risk."
+.
+
+
+
+
+
+###  http://example.org/msdo#PreventiveStrategy
+
+msdo:PreventiveStrategy rdf:type owl:Class ;
+
+                        skos:exactMatch
+icps:PreventiveAction .
+
+
+
+
+
+### 
+http://example.org/msdo#Probability
+
+msdo:Probability rdf:type owl:Class .
+
+
+
+
+
+###  http://example.org/msdo#Rationale
+
+msdo:Rationale rdf:type owl:Class .
+
+
+
+
+
+### 
+http://example.org/msdo#Recommendation
+
+msdo:Recommendation rdf:type owl:Class ;
+
+                    rdfs:subClassOf
+msdo:DecisionArtifact .
+
+
+
+
+
+### 
+http://example.org/msdo#RequiresDoseAdjustment
+
+msdo:RequiresDoseAdjustment rdf:type owl:Class .
+
+
+
+
+
+### 
+http://example.org/msdo#RequiresEnhancedMonitoring
+
+msdo:RequiresEnhancedMonitoring rdf:type owl:Class .
+
+
+
+
+
+### 
+http://example.org/msdo#RequiresHumanOverrideReview
+
+msdo:RequiresHumanOverrideReview rdf:type owl:Class .
+
+
+
+
+
+### 
+http://example.org/msdo#RiskProfile
+
+msdo:RiskProfile rdf:type owl:Class ;
+
+                 skos:closeMatch
+icps:PatientCharacteristics .
+
+
+
+
+
+### 
+http://example.org/msdo#RouteOfAdministration
+
+msdo:RouteOfAdministration rdf:type owl:Class ;
+
+                          
+skos:closeMatch <http://snomed.info/id/284009009> .
+
+
+
+
+
+###  http://example.org/msdo#Severity
+
+msdo:Severity rdf:type owl:Class ;
+
+              skos:closeMatch
+meddra:Severity .
+
+
+
+
+
+### 
+http://example.org/msdo#TherapeuticClass
+
+msdo:TherapeuticClass rdf:type owl:Class ;
+
+                      owl:equivalentClass
+atc:ATCCode ;
+
+                      rdfs:subClassOf
+atc:ATCCode ;
+
+                      rdfs:comment
+"Pharmacological or therapeutic grouping of medications." .
+
+
+
+
+
+###  http://example.org/msdo#TriggerMedicationReview
+
+msdo:TriggerMedicationReview rdf:type owl:Class .
+
+
+
+
+
+### 
+http://example.org/msdo#TrustCalibration
+
+msdo:TrustCalibration rdf:type owl:Class .
+
+
+
+
+
+### 
+http://example.org/msdo#Uncertainty
+
+msdo:Uncertainty rdf:type owl:Class .
+
+
+
+
+
+###  http://loinc.org/rdf/LP29684-5
+
+loinc:LP29684-5 rdf:type owl:Class ;
+
+                rdfs:subClassOf
+msdo:LaboratoryParameter .
+
+
+
+
+
+### 
+http://purl.bioontology.org/ontology/MEDDRA/10002034
+
+<http://purl.bioontology.org/ontology/MEDDRA/10002034> rdf:type owl:Class
+;
+
+                                                      
+rdfs:subClassOf msdo:AdverseDrugEvent ,
+
+                                                                      
+msdo:MedicationRelatedRisk .
+
+
+
+
+
+### 
+http://rxnav.nlm.nih.gov/REST/rxcui/ClinicalDrug
+
+rxnorm:ClinicalDrug rdf:type owl:Class ;
+
+                    rdfs:subClassOf
+msdo:Medication ,
+
+                                   
+msdo:MedicationEntity .
+
+
+
+
+
+###  http://snomed.info/id/404684003
+
+<http://snomed.info/id/404684003> rdf:type owl:Class ;
+
+                                 
+rdfs:subClassOf msdo:ClinicalCondition .
+
+
+
+
+
+### 
+http://www.who.int/patientsafety/taxonomy/ContributingFactor
+
+icps:ContributingFactor rdf:type owl:Class ;
+
+                        rdfs:subClassOf
+msdo:ContributingFactor .
+
+
+
+
+
+### 
+http://www.who.int/patientsafety/taxonomy/MedicationError
+
+icps:MedicationError rdf:type owl:Class ;
+
+                     rdfs:subClassOf
+msdo:MedicationError ,
+
+                                    
+msdo:MedicationRelatedRisk .
+
+
+
+
+
+###  http://www.who.int/patientsafety/taxonomy/NearMiss
+
+icps:NearMiss rdf:type owl:Class ;
+
+              rdfs:subClassOf
+msdo:NearMiss .
+
+
+
+
+
+### 
+http://www.whocc.no/atc_ddd_index/ATCCode
+
+atc:ATCCode rdf:type owl:Class ;
+
+            rdfs:subClassOf
+msdo:TherapeuticClass .
+
+
+
+
+
+#################################################################
+
+#    Individuals
+
+
+
+#################################################################
+
+ 
+
+
+
+###  http://example.org/msdo#ADR_Bleeding
+
+msdo:ADR_Bleeding rdf:type owl:NamedIndividual ,
+
+                           msdo:AdverseDrugEvent ,
+
+                          
+msdo:AdverseDrugReaction ,
+
+                          
+msdo:MedicationRelatedRisk ,
+
+                          
+<http://purl.bioontology.org/ontology/MEDDRA/10002034> .
+
+
+
+
+
+### 
+http://example.org/msdo#Amiodarone
+
+msdo:Amiodarone rdf:type owl:NamedIndividual ,
+
+                         msdo:Medication
+,
+
+                        
+msdo:MedicationEntity ,
+
+                        
+rxnorm:ClinicalDrug .
+
+
+
+
+
+### 
+http://example.org/msdo#CYP450Mechanism
+
+msdo:CYP450Mechanism rdf:type owl:NamedIndividual ,
+
+                             
+msdo:DrugDrugInteraction .
+
+
+
+
+
+### 
+http://example.org/msdo#CYP450_Mechanism
+
+msdo:CYP450_Mechanism rdf:type owl:NamedIndividual ,
+
+                              
+msdo:DrugDrugInteraction .
+
+
+
+
+
+### 
+http://example.org/msdo#Clinician_A
+
+msdo:Clinician_A rdf:type owl:NamedIndividual ,
+
+                          msdo:Clinician
+.
+
+
+
+
+
+### 
+http://example.org/msdo#Discrepancy_1
+
+msdo:Discrepancy_1 rdf:type owl:NamedIndividual ,
+
+                            msdo:MedicationDiscrepancy ,
+
+                           
+msdo:TriggerMedicationReview .
+
+
+
+
+
+### 
+http://example.org/msdo#ElderlyPatient
+
+msdo:ElderlyPatient rdf:type owl:NamedIndividual ,
+
+                             msdo:Patient
+,
+
+                            
+msdo:PatientContext ,
+
+                            
+msdo:RequiresDoseAdjustment ,
+
+                            
+msdo:RequiresEnhancedMonitoring ;
+
+                    msdo:hasGeneticRisk
+msdo:GeneticRisk_1 ;
+
+                    msdo:hasOrganFunction
+msdo:RenalImpairment ;
+
+                    msdo:prescribedDrug
+msdo:Warfarin .
+
+
+
+
+
+### 
+http://example.org/msdo#ElderlyPatient001
+
+msdo:ElderlyPatient001 rdf:type owl:NamedIndividual ,
+
+                               
+msdo:Patient ,
+
+                               
+msdo:PatientContext ,
+
+                               
+msdo:RequiresEnhancedMonitoring ;
+
+                      
+msdo:hasOrganFunction msdo:RenalImpairment ;
+
+                      
+msdo:prescribedDrug msdo:Warfarin .
+
+
+
+
+
+###  http://example.org/msdo#GeneticRisk_1
+
+msdo:GeneticRisk_1 rdf:type owl:NamedIndividual ,
+
+                           
+msdo:PharmacogenomicProfile .
+
+
+
+
+
+### 
+http://example.org/msdo#HighSeverity
+
+msdo:HighSeverity rdf:type owl:NamedIndividual ,
+
+                           msdo:Severity
+.
+
+
+
+
+
+### 
+http://example.org/msdo#NTW_Status
+
+msdo:NTW_Status rdf:type owl:NamedIndividual ,
+
+                         msdo:RiskProfile
+.
+
+
+
+
+
+### 
+http://example.org/msdo#Recommendation_1
+
+msdo:Recommendation_1 rdf:type owl:NamedIndividual ,
+
+                               msdo:DecisionArtifact ,
+
+                              
+msdo:Recommendation ,
+
+                              
+msdo:RequiresHumanOverrideReview ;
+
+                      msdo:reviewedBy
+msdo:Clinician_A .
+
+
+
+
+
+### 
+http://example.org/msdo#RenalImpairment
+
+msdo:RenalImpairment rdf:type owl:NamedIndividual ,
+
+                             
+msdo:OrganFunction .
+
+
+
+
+
+###  http://example.org/msdo#Warfarin
+
+msdo:Warfarin rdf:type owl:NamedIndividual ,
+
+                      
+msdo:DrugDrugInteraction ,
+
+                       msdo:EmergingSafetySignal ,
+
+                      
+msdo:HighRiskMedicationCombination ,
+
+                       msdo:Medication
+,
+
+                      
+msdo:MedicationEntity ,
+
+                      
+rxnorm:ClinicalDrug ;
+
+              msdo:associatedWith
+msdo:ADR_Bleeding ;
+
+             
+msdo:hasInteractionMechanism msdo:CYP450Mechanism ,
+
+                                          
+msdo:CYP450_Mechanism ;
+
+              msdo:hasRiskProfile
+msdo:NTW_Status ;
+
+              msdo:hasSeverity
+msdo:HighSeverity ;
+
+              msdo:interactsWith
+msdo:Amiodarone .
+
+
+
+
+
+#################################################################
+
+#    Rules
+
+
+
+#################################################################
+
+ 
+
+
+
+<d>
+rdf:type <http://www.w3.org/2003/11/swrl#Variable> .
+
+
+
+<adr> rdf:type <http://www.w3.org/2003/11/swrl#Variable> .
+
+
+
+<d1> rdf:type <http://www.w3.org/2003/11/swrl#Variable> .
+
+
+
+<d2> rdf:type <http://www.w3.org/2003/11/swrl#Variable> .
+
+
+
+<x> rdf:type <http://www.w3.org/2003/11/swrl#Variable> .
+
+
+
+<p> rdf:type <http://www.w3.org/2003/11/swrl#Variable> .
+
+
+
+<g> rdf:type <http://www.w3.org/2003/11/swrl#Variable> .
+
+
+
+<r> rdf:type <http://www.w3.org/2003/11/swrl#Variable> .
+
+
+
+<c> rdf:type <http://www.w3.org/2003/11/swrl#Variable> .
+
+
+
+[ <http://swrl.stanford.edu/ontologies/3.3/swrla.owl#isRuleEnabled>
+"true"^^xsd:boolean ;
+
+   rdfs:comment "" ;
+
+   rdfs:label "Rule 5 — Emerging
+Safety Signal" ;
+
+   rdf:type
+<http://www.w3.org/2003/11/swrl#Imp> ;
+
+  
+<http://www.w3.org/2003/11/swrl#body> [ rdf:type
+<http://www.w3.org/2003/11/swrl#AtomList> ;
+
+                                          
+rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#ClassAtom>
+;
+
+                                                      
+<http://www.w3.org/2003/11/swrl#classPredicate> msdo:Medication
+;
+
+                                                      
+<http://www.w3.org/2003/11/swrl#argument1> <d>
+
+                                                    
+] ;
+
+                                          
+rdf:rest [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+
+                                                      rdf:first
+[ rdf:type <http://www.w3.org/2003/11/swrl#IndividualPropertyAtom> ;
+
+                                                                 
+<http://www.w3.org/2003/11/swrl#propertyPredicate>
+msdo:associatedWith ;
+
+                                                                 
+<http://www.w3.org/2003/11/swrl#argument1> <d> ;
+
+                                                                 
+<http://www.w3.org/2003/11/swrl#argument2> <adr>
+
+                                                                ]
+;
+
+                                                     
+rdf:rest rdf:nil
+
+                                                   
+]
+
+                                        
+] ;
+
+  
+<http://www.w3.org/2003/11/swrl#head> [ rdf:type
+<http://www.w3.org/2003/11/swrl#AtomList> ;
+
+                                          
+rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#ClassAtom>
+;
+
+                                                      
+<http://www.w3.org/2003/11/swrl#classPredicate>
+msdo:EmergingSafetySignal ;
+
+                                                      
+<http://www.w3.org/2003/11/swrl#argument1> <d>
+
+                                                    
+] ;
+
+                                          
+rdf:rest rdf:nil
+
+                                        
+]
+
+ ] .
+
+
+
+[ <http://swrl.stanford.edu/ontologies/3.3/swrla.owl#isRuleEnabled>
+"true"^^xsd:boolean ;
+
+   rdfs:comment "" ;
+
+   rdfs:label "Rule 3 — Medication
+Discrepancy Review" ;
+
+   rdf:type <http://www.w3.org/2003/11/swrl#Imp>
+;
+
+  
+<http://www.w3.org/2003/11/swrl#body> [ rdf:type
+<http://www.w3.org/2003/11/swrl#AtomList> ;
+
+                                          
+rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#ClassAtom>
+;
+
+                                                      
+<http://www.w3.org/2003/11/swrl#classPredicate>
+msdo:MedicationDiscrepancy ;
+
+                                                      
+<http://www.w3.org/2003/11/swrl#argument1> <x>
+
+                                               
+     ] ;
+
+                                          
+rdf:rest rdf:nil
+
+                                        
+] ;
+
+  
+<http://www.w3.org/2003/11/swrl#head> [ rdf:type
+<http://www.w3.org/2003/11/swrl#AtomList> ;
+
+                                          
+rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#ClassAtom>
+;
+
+                                                      
+<http://www.w3.org/2003/11/swrl#classPredicate>
+msdo:TriggerMedicationReview ;
+
+                                                      
+<http://www.w3.org/2003/11/swrl#argument1> <x>
+
+                                                    
+] ;
+
+                                          
+rdf:rest rdf:nil
+
+                                        
+]
+
+ ] .
+
+
+
+[ <http://swrl.stanford.edu/ontologies/3.3/swrla.owl#isRuleEnabled>
+"true"^^xsd:boolean ;
+
+   rdfs:comment "" ;
+
+   rdfs:label "Rule 2 — Dose
+Adjustment" ;
+
+   rdf:type
+<http://www.w3.org/2003/11/swrl#Imp> ;
+
+  
+<http://www.w3.org/2003/11/swrl#body> [ rdf:type
+<http://www.w3.org/2003/11/swrl#AtomList> ;
+
+                                           rdf:first
+[ rdf:type <http://www.w3.org/2003/11/swrl#ClassAtom> ;
+
+                                                      
+<http://www.w3.org/2003/11/swrl#classPredicate> msdo:Patient ;
+
+                                                      
+<http://www.w3.org/2003/11/swrl#argument1> <p>
+
+                                                    
+] ;
+
+                                          
+rdf:rest [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+
+                                                      rdf:first [
+rdf:type <http://www.w3.org/2003/11/swrl#IndividualPropertyAtom> ;
+
+                                                                 
+<http://www.w3.org/2003/11/swrl#propertyPredicate>
+msdo:hasGeneticRisk ;
+
+                                                                 
+<http://www.w3.org/2003/11/swrl#argument1> <p> ;
+
+                                                                 
+<http://www.w3.org/2003/11/swrl#argument2> <g>
+
+                                                                ] ;
+
+                                                     
+rdf:rest [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+
+                                                                
+rdf:first [ rdf:type
+<http://www.w3.org/2003/11/swrl#IndividualPropertyAtom> ;
+
+                                                                            
+<http://www.w3.org/2003/11/swrl#propertyPredicate>
+msdo:prescribedDrug ;
+
+                                                                
+            <http://www.w3.org/2003/11/swrl#argument1>
+<p> ;
+
+                                                                            
+<http://www.w3.org/2003/11/swrl#argument2> <d>
+
+                                                                          
+] ;
+
+                                                                
+rdf:rest rdf:nil
+
+                                                              
+]
+
+                                                   
+]
+
+                                        
+] ;
+
+   <http://www.w3.org/2003/11/swrl#head> [
+rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+
+                                          
+rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#ClassAtom>
+;
+
+                                                      
+<http://www.w3.org/2003/11/swrl#classPredicate>
+msdo:RequiresDoseAdjustment ;
+
+                                                      
+<http://www.w3.org/2003/11/swrl#argument1> <p>
+
+                                                    
+] ;
+
+                                           rdf:rest rdf:nil
+
+                                        
+]
+
+ ] .
+
+
+
+[ <http://swrl.stanford.edu/ontologies/3.3/swrla.owl#isRuleEnabled>
+"true"^^xsd:boolean ;
+
+   rdfs:comment "" ;
+
+   rdfs:label "Rule 6 — Enhanced
+Monitoring" ;
+
+   rdf:type
+<http://www.w3.org/2003/11/swrl#Imp> ;
+
+  
+<http://www.w3.org/2003/11/swrl#body> [ rdf:type
+<http://www.w3.org/2003/11/swrl#AtomList> ;
+
+                                          
+rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#ClassAtom>
+;
+
+                                                       <http://www.w3.org/2003/11/swrl#classPredicate>
+msdo:Patient ;
+
+                                                      
+<http://www.w3.org/2003/11/swrl#argument1> <p>
+
+                                                    
+] ;
+
+                                          
+rdf:rest [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+
+                                                     
+rdf:first [ rdf:type
+<http://www.w3.org/2003/11/swrl#IndividualPropertyAtom> ;
+
+                                                                 
+<http://www.w3.org/2003/11/swrl#propertyPredicate>
+msdo:hasOrganFunction ;
+
+                                                                 
+<http://www.w3.org/2003/11/swrl#argument1> <p> ;
+
+                                                                 
+<http://www.w3.org/2003/11/swrl#argument2> msdo:RenalImpairment
+
+                                                               
+] ;
+
+                                                     
+rdf:rest [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+
+                                                                
+rdf:first [ rdf:type
+<http://www.w3.org/2003/11/swrl#IndividualPropertyAtom> ;
+
+                                                                            
+<http://www.w3.org/2003/11/swrl#propertyPredicate>
+msdo:prescribedDrug ;
+
+                                                                            
+<http://www.w3.org/2003/11/swrl#argument1> <p> ;
+
+                                                                             <http://www.w3.org/2003/11/swrl#argument2>
+<d1>
+
+                                                                          
+] ;
+
+                                                                
+rdf:rest [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+
+                                                                           
+rdf:first [ rdf:type
+<http://www.w3.org/2003/11/swrl#IndividualPropertyAtom> ;
+
+                                                        
+                               <http://www.w3.org/2003/11/swrl#propertyPredicate>
+msdo:interactsWith ;
+
+                                                                                       
+<http://www.w3.org/2003/11/swrl#argument1> <d1> ;
+
+                                                                                       
+<http://www.w3.org/2003/11/swrl#argument2> <d2>
+
+                                                                                     
+] ;
+
+                                            
+                               rdf:rest [
+rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+
+                                                                                      
+rdf:first [ rdf:type
+<http://www.w3.org/2003/11/swrl#IndividualPropertyAtom> ;
+
+                                                                                                  
+<http://www.w3.org/2003/11/swrl#propertyPredicate>
+msdo:hasInteractionMechanism ;
+
+                                                                     
+                             <http://www.w3.org/2003/11/swrl#argument1>
+<d1> ;
+
+                                                                                                  
+<http://www.w3.org/2003/11/swrl#argument2> msdo:CYP450Mechanism
+
+                                                                                                
+] ;
+
+                                                                                      
+rdf:rest [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+
+                                                                                                  rdf:first
+[ rdf:type <http://www.w3.org/2003/11/swrl#IndividualPropertyAtom> ;
+
+                                                                                                             
+<http://www.w3.org/2003/11/swrl#propertyPredicate>
+msdo:hasRiskProfile ;
+
+                                                                                                             
+<http://www.w3.org/2003/11/swrl#argument1> <d1> ;
+
+                                                                                                              <http://www.w3.org/2003/11/swrl#argument2>
+msdo:NTW_Status
+
+                                                                                                           
+] ;
+
+                                                                                                 
+rdf:rest rdf:nil
+
+                                                                                               
+]
+
+                                                                                     ]
+
+                                                                         
+]
+
+                                                              
+]
+
+                                                   
+]
+
+                                        
+] ;
+
+  
+<http://www.w3.org/2003/11/swrl#head> [ rdf:type
+<http://www.w3.org/2003/11/swrl#AtomList> ;
+
+                                          
+rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#ClassAtom>
+;
+
+                                                       <http://www.w3.org/2003/11/swrl#classPredicate>
+msdo:RequiresEnhancedMonitoring ;
+
+                                                      
+<http://www.w3.org/2003/11/swrl#argument1> <p>
+
+                                                    
+] ;
+
+                                          
+rdf:rest rdf:nil
+
+                                        
+]
+
+ ] .
+
+
+
+[ <http://swrl.stanford.edu/ontologies/3.3/swrla.owl#isRuleEnabled>
+"true"^^xsd:boolean ;
+
+   rdfs:comment "" ;
+
+   rdfs:label "Rule 4 — Human
+Override Review" ;
+
+   rdf:type
+<http://www.w3.org/2003/11/swrl#Imp> ;
+
+  
+<http://www.w3.org/2003/11/swrl#body> [ rdf:type
+<http://www.w3.org/2003/11/swrl#AtomList> ;
+
+                                          
+rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#ClassAtom>
+;
+
+                                                      
+<http://www.w3.org/2003/11/swrl#classPredicate>
+msdo:Recommendation ;
+
+                                                      
+<http://www.w3.org/2003/11/swrl#argument1> <r>
+
+                                                    
+] ;
+
+                                          
+rdf:rest [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+
+                                                     
+rdf:first [ rdf:type
+<http://www.w3.org/2003/11/swrl#IndividualPropertyAtom> ;
+
+                                                                 
+<http://www.w3.org/2003/11/swrl#propertyPredicate> msdo:reviewedBy
+;
+
+                                                               
+  <http://www.w3.org/2003/11/swrl#argument1>
+<r> ;
+
+                                                                 
+<http://www.w3.org/2003/11/swrl#argument2> <c>
+
+                                                               
+] ;
+
+                                                     
+rdf:rest rdf:nil
+
+                                                   
+]
+
+                                        
+] ;
+
+  
+<http://www.w3.org/2003/11/swrl#head> [ rdf:type
+<http://www.w3.org/2003/11/swrl#AtomList> ;
+
+                                           rdf:first [
+rdf:type <http://www.w3.org/2003/11/swrl#ClassAtom> ;
+
+                                                      
+<http://www.w3.org/2003/11/swrl#classPredicate>
+msdo:RequiresHumanOverrideReview ;
+
+                                                      
+<http://www.w3.org/2003/11/swrl#argument1> <r>
+
+                                                    
+] ;
+
+                                          
+rdf:rest rdf:nil
+
+                                        
+]
+
+ ] .
+
+
+
+[ <http://swrl.stanford.edu/ontologies/3.3/swrla.owl#isRuleEnabled>
+"true"^^xsd:boolean ;
+
+   rdfs:comment "" ;
+
+   rdfs:label "Rule 1 — High Risk
+Drug Combination" ;
+
+   rdf:type
+<http://www.w3.org/2003/11/swrl#Imp> ;
+
+  
+<http://www.w3.org/2003/11/swrl#body> [ rdf:type
+<http://www.w3.org/2003/11/swrl#AtomList> ;
+
+                                          
+rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#ClassAtom>
+;
+
+                                                      
+<http://www.w3.org/2003/11/swrl#classPredicate> msdo:Medication
+;
+
+                                                      
+<http://www.w3.org/2003/11/swrl#argument1> <d1>
+
+                                                    
+] ;
+
+                                          
+rdf:rest [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+
+                                                     
+rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#ClassAtom>
+;
+
+                                                                 
+<http://www.w3.org/2003/11/swrl#classPredicate> msdo:Medication
+;
+
+                                                                 
+<http://www.w3.org/2003/11/swrl#argument1> <d2>
+
+                                                               
+] ;
+
+                                                     
+rdf:rest [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+
+                                                                
+rdf:first [ rdf:type
+<http://www.w3.org/2003/11/swrl#IndividualPropertyAtom> ;
+
+                                         
+                                   <http://www.w3.org/2003/11/swrl#propertyPredicate>
+msdo:interactsWith ;
+
+                                                                            
+<http://www.w3.org/2003/11/swrl#argument1> <d1> ;
+
+                                                                            
+<http://www.w3.org/2003/11/swrl#argument2> <d2>
+
+                                                                          
+] ;
+
+                                                                
+rdf:rest rdf:nil
+
+                                                              
+]
+
+                                                   
+]
+
+                                        
+] ;
+
+  
+<http://www.w3.org/2003/11/swrl#head> [ rdf:type
+<http://www.w3.org/2003/11/swrl#AtomList> ;
+
+                                          
+rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#ClassAtom>
+;
+
+                                                      
+<http://www.w3.org/2003/11/swrl#classPredicate>
+msdo:HighRiskMedicationCombination ;
+
+                                                      
+<http://www.w3.org/2003/11/swrl#argument1> <d1>
+
+                                                    
+] ;
+
+                                          
+rdf:rest rdf:nil
+
+                                        
+]
+
+ ] .
+
+
+
+###  Generated by the OWL API (version
+4.5.29.2024-05-13T12:11:03Z) https://github.com/owlcs/owlapi
+
+ 
+
+
+
