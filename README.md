@@ -144,6 +144,22 @@ MSCDO-Medication-Safety-Co-Decision-Ontology
 ```
 
 ---
+## Specifications
+
+| Feature | Description |
+|---------|-------------|
+| Ontology Language | OWL 2 |
+| Development Environment | Protégé |
+| Knowledge Representation | RDF/OWL |
+| Query Support | SPARQL |
+| Rule Support | SWRL |
+| Reasoning Compatibility | HermiT, Pellet |
+| Semantic Standards | RDF, RDFS, XML, Turtle |
+| Domain | Medication Safety |
+| Biomedical Terminologies | RxNorm, SNOMED CT, LOINC, MedDRA, UMLS, WHO ICPS, ATC |
+| BioPortal | Publicly available |
+| License | MIT |
+| Version | v1.0 |
 
 # Citation
 
