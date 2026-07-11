@@ -1,0 +1,12 @@
+# Protégé
+*.bak
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.log
