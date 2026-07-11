@@ -1,0 +1,26 @@
+cff-version: 1.2.0
+title: "MSCDO: Medication Safety Co-Decision Ontology"
+message: "If you use this ontology, please cite it using the metadata below."
+type: software
+
+authors:
+  - family-names: Taheri Moghadam
+    given-names: Sharare
+
+version: "1.0"
+
+date-released: 2026-07-11
+
+license: MIT
+
+repository-code: https://github.com/YOUR_USERNAME/MSCDO
+
+url: https://bioportal.bioontology.org/ontologies/MSCDO
+
+keywords:
+  - Medical Informatics
+  - Ontology
+  - Medication Safety
+  - Clinical Decision Support
+  - Biomedical Ontology
+  - Explainable AI
